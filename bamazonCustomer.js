@@ -23,13 +23,13 @@ function readProducts() {
         // Log all results of the SELECT statement
         console.log(res);
         // prompt user for product ID
-        idPrompt();
+        idPrompt(res);
 
 
     });
 }
 
-function idPrompt() {
+function idPrompt(res) {
     inquirer
         .prompt([
             {
@@ -43,21 +43,21 @@ function idPrompt() {
             if (!(ID > 0 || ID <= res.length)) {
                 // if user enters an invalid product ID, notify them and run the same prompt again
                 console.log('Invalid product ID.');
-                idPrompt();
+                idPrompt(res);
             } else {
                 // if user enters a valid ID, ask them the amount they wish to buy
-                purchaseAmountPrompt(ID);
+                purchaseAmountPrompt(res, ID);
             }
         });
     ;
 }
 
-function purchaseAmountPrompt(ID) {
+function purchaseAmountPrompt(res, ID) {
     inquirer
         .prompt([
             {
                 type: "input",
-                message: "How many would you like to buy?",
+                message: `How many would you like to buy? (${res[ID - 1].stock_quantity} currently in stock)`,
                 name: "purchaseAmount"
             }
         ])
@@ -67,7 +67,27 @@ function purchaseAmountPrompt(ID) {
                 // if user enters a non-number or negative number, notify them and reprompt
                 console.log('Invalid entry. Please enter a number greater than 0.');
                 purchaseAmountPrompt(ID);
+            } else if (amount > res[ID - 1].stock_quantity) {
+                console.log(`Sorry, we only have ${amount} in stock. Please enter a lower number.`);
+                purchaseAmountPrompt(ID);
+            } else {
+                updateProduct(ID, res[ID - 1].stock_quantity, amount);
             }
         });
     ;
+}
+
+// don't forget to pass the other item info as paramters to log them
+function updateProduct(ID, stockQuant, amount) {
+    connection.query(`UPDATE products
+    SET stock_quantity = ?
+    WHERE item_id = ?
+    `, [stockQuant - amount, ID], function (err, res) {
+            if (err) throw err;
+            // console.log(res);
+            console.log('')
+        });
+    ;
+
+
 }
