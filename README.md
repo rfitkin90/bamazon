@@ -38,7 +38,7 @@
 
 ![ProductDisplay](https://puu.sh/CEC0B.png)
 
-7. Follow the instructions in the remaining prompts to select which product to buy, how many
-of it you wish to buy, view your total checkout price, and continue shopping or not.
+7. Follow the instructions in the remaining prompts to select which product to buy, specify how many
+of it you wish to buy, view your total checkout price, and decide whether or not to continue shopping.
 
 ![Prompts](https://puu.sh/CEC5l.png)
