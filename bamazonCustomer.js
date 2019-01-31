@@ -107,7 +107,7 @@ function confirmPurchase(res, ID, stockQuantity, amount) {
         .then(answers => {
             if (answers.confirmPurchase) {
                 // update the stock quantity in the database if they confirm purchase
-                updateProduct(res, ID, stockQuantity, amount);
+                updateProduct(ID, stockQuantity, amount);
                 console.log(`${amount} `.yellow + `${productName} `.green +
                     'purchased for ' + `$${totalPrice}`.yellow + '!');
                 // ask them if they want to continue shopping
@@ -119,11 +119,6 @@ function confirmPurchase(res, ID, stockQuantity, amount) {
         });
     ;
 }
-
-/*
-QUESTION:
-why does the app automatically end immediately after calling the reshop prompt at line 114?
-*/
 
 function updateProduct(ID, stockQuantity, amount) {
     // update stock quantity in database
@@ -137,6 +132,7 @@ function updateProduct(ID, stockQuantity, amount) {
 }
 
 function reShop(res) {
+    console.log('reshop called');
     inquirer
         .prompt([
             {
@@ -146,6 +142,7 @@ function reShop(res) {
             }
         ])
         .then(answers => {
+            console.log("yo")
             if (answers.reShop) {
                 idPrompt(res);
             } else {
