@@ -36,6 +36,8 @@ function menuPrompt() {
                 viewProducts();
             } else if (answers.managerActions === "View low inventory") {
                 viewLowInventory();
+            } else if (answers.managerActions === "Add to inventory") {
+                addToInventory();
             }
         });
     ;
@@ -80,7 +82,45 @@ function viewLowInventory() {
 }
 
 function addToInventory() {
-    
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "Enter the ID of the product you wish to restock.",
+                name: "restock"
+            }
+        ])
+        .then(answers => {
+            console.log("Displaying all products...\n");
+            connection.query("SELECT * FROM products WHERE item_id = ?", [answers.restock], function (err, res) {
+                if (err) throw err;
+                // Log all results of the SELECT statement
+                res.forEach(elem => {
+                    var elemData = [
+                        '     Product ID: ' + `${elem.item_id}`.yellow,
+                        '           Name: ' + `${elem.product_name}`.green,
+                        '     Department: ' + `${elem.department_name}`.green,
+                        '          Price: ' + `$${elem.price}`.yellow,
+                        'Amount in stock: ' + `${elem.stock_quantity}`.yellow
+                    ].join('\n');
+                    console.log(elemData + '\n');
+                });
+                menuPrompt();
+            });
+            inquirer
+                .prompt([
+                    {
+                        type: "input",
+                        message: ".",
+                        name: "restock"
+                    }
+                ])
+                .then(answers => {
+
+                });
+            ;
+        });
+    ;
 }
 
 // function 

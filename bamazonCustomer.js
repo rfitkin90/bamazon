@@ -132,7 +132,6 @@ function updateProduct(ID, stockQuantity, amount) {
 }
 
 function reShop(res) {
-    console.log('reshop called');
     inquirer
         .prompt([
             {
@@ -142,7 +141,6 @@ function reShop(res) {
             }
         ])
         .then(answers => {
-            console.log("yo")
             if (answers.reShop) {
                 idPrompt(res);
             } else {
