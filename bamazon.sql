@@ -9,8 +9,11 @@ CREATE TABLE products (
     department_name TEXT NOT NULL,
     price DECIMAL(10 , 2 ) NOT NULL,
     stock_quantity INTEGER NOT NULL,
-    product_sales DECIMAL(10 , 2 )
+    product_sales DOUBLE(10 , 2 )
 );
+
+UPDATE products
+SET product_sales = 0.00;
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Nintendo Switch", "Video Games", 299.00, 4786);
@@ -42,7 +45,3 @@ CREATE TABLE departments (
 
 INSERT INTO departments (department_name, overhead_costs) 
 VALUES ("Video Games", 10000.00);
-
-SELECT product_sales
-FROM products INNER JOIN departments
-ON products.department_name = departments.department_name;

@@ -65,11 +65,26 @@ function viewSalesByDept(res) {
             }
         ])
         .then(answers => {
-            
+            var ID = answers.departmentID - 1;
+            // console.log(res);
+            // console.log(ID);
+            console.log(res[ID].department_name);
+            connection.query(`SELECT product_sales FROM bamazon.products
+            WHERE bamazon.products.department_name = ?
+            `, [res[ID].department_name], function (err, res) {
+                    if (err) throw err;
+                    console.log(res);
+                });
+            ;
         });
     ;
 }
+// SELECT *
+// FROM Orders
 
+// INNER JOIN Customers
+
+// ON Orders.CustomerID=Customers.CustomerID;
 function createNewDept() {
 
 }

@@ -28,7 +28,8 @@ function readProducts() {
                 '           Name: ' + `${elem.product_name}`.green,
                 '     Department: ' + `${elem.department_name}`.green,
                 '          Price: ' + `$${elem.price}`.yellow,
-                'Amount in stock: ' + `${elem.stock_quantity}`.yellow
+                'Amount in stock: ' + `${elem.stock_quantity}`.yellow,
+                '  Product Sales: ' + `${elem.product_sales}`.green
             ].join('\n');
             console.log(elemData + '\n');
         });
@@ -47,7 +48,7 @@ function idPrompt(res) {
             }
         ])
         .then(answers => {
-            var ID = Number(answers.ID)
+            var ID = Number(answers.ID);
             if (!(ID > 0 && ID <= res.length)) {
                 // if user enters an invalid product ID, notify them and run the same prompt again
                 console.log('Error: Invalid product ID.'.red);
@@ -108,7 +109,7 @@ function confirmPurchase(res, ID, stockQuantity, amount) {
         .then(answers => {
             if (answers.confirmPurchase) {
                 // update the stock quantity in the database if they confirm purchase
-                updateProduct(res, ID, stockQuantity, amount, originalSales, totalPrice);
+                updateProduct(ID, stockQuantity, amount, originalSales, totalPrice);
                 console.log(`${amount} `.yellow + `${productName} `.green +
                     'purchased for ' + `$${totalPrice}`.yellow + '!');
                 // ask them if they want to continue shopping
@@ -124,13 +125,15 @@ function confirmPurchase(res, ID, stockQuantity, amount) {
 function updateProduct(ID, stockQuantity, amount, originalSales, totalPrice) {
     var newStock = stockQuantity - amount;
     var newSales = originalSales + totalPrice;
+    console.log(`original sales: ${originalSales}`);
+    console.log(`total price: ${totalPrice}`);
+    console.log(`new sales: ${newSales}`);
+    console.log(`ID: ${ID}`);
     // update stock quantity in database
-    connection.query(`UPDATE products
-    SET stock_quantity = ?
-    product_price = ?
-    WHERE item_id = ?
-    `, [newStock, newSales, ID], function (err, res) {
+    connection.query("UPDATE products SET stock_quantity = ?, product_sales = ? WHERE item_id = ?",
+        [newStock, newSales, ID], function (err) {
             if (err) throw err;
+            console.log('sup');
         });
     ;
 }
