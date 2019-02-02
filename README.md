@@ -75,7 +75,7 @@ of it you wish to buy, view your total checkout price, and decide whether or not
         * This will let you select a product to restock, display its info, and let you specify how much 
         you wish to replenishthe stock by.
 
-        ![AddToInventory](https://puu.sh/CG6EP.png)
+        ![AddToInventory](https://puu.sh/CG6M7.png)
 
     4. Add new product
 
