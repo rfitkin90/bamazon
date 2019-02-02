@@ -17,6 +17,7 @@ connection.connect(function (err) {
 });
 
 function menuPrompt() {
+    // main prompt to ask the manager which action he wants to take
     inquirer
         .prompt([
             {
@@ -38,6 +39,8 @@ function menuPrompt() {
                 viewLowInventory();
             } else if (answers.managerActions === "Add to inventory") {
                 addToInventory();
+            } else if (answers.managerActions === "Add new product") {
+                addNewProduct();
             }
         });
     ;
@@ -48,16 +51,7 @@ function viewProducts() {
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
         // Log all results of the SELECT statement
-        res.forEach(elem => {
-            var elemData = [
-                '     Product ID: ' + `${elem.item_id}`.yellow,
-                '           Name: ' + `${elem.product_name}`.green,
-                '     Department: ' + `${elem.department_name}`.green,
-                '          Price: ' + `$${elem.price}`.yellow,
-                'Amount in stock: ' + `${elem.stock_quantity}`.yellow
-            ].join('\n');
-            console.log(elemData + '\n');
-        });
+        logResponseElems(res);
         menuPrompt();
     });
 }
@@ -67,71 +61,119 @@ function viewLowInventory() {
     connection.query("SELECT * FROM products WHERE stock_quantity < ?", [5000], function (err, res) {
         if (err) throw err;
         // Log all results of the SELECT statement
-        res.forEach(elem => {
-            var elemData = [
-                '     Product ID: ' + `${elem.item_id}`.yellow,
-                '           Name: ' + `${elem.product_name}`.green,
-                '     Department: ' + `${elem.department_name}`.green,
-                '          Price: ' + `$${elem.price}`.yellow,
-                'Amount in stock: ' + `${elem.stock_quantity}`.yellow
-            ].join('\n');
-            console.log(elemData + '\n');
-        });
+        logResponseElems(res);
         menuPrompt();
     });
 }
 
 function addToInventory() {
+    // manager chooses the ID of the product he wishes to add to the inventory of
     inquirer
         .prompt([
             {
                 type: "input",
                 message: "Enter the ID of the product you wish to restock.",
-                name: "restock"
+                name: "restockID"
             }
         ])
         .then(answers => {
-            console.log("Displaying all products...\n");
-            connection.query("SELECT * FROM products WHERE item_id = ?", [answers.restock], function (err, res) {
+            console.log("Displaying selected product...\n");
+            connection.query("SELECT * FROM products WHERE item_id = ?", [answers.restockID], function (err, res) {
                 if (err) throw err;
                 // Log all results of the SELECT statement
-                res.forEach(elem => {
-                    var elemData = [
-                        '     Product ID: ' + `${elem.item_id}`.yellow,
-                        '           Name: ' + `${elem.product_name}`.green,
-                        '     Department: ' + `${elem.department_name}`.green,
-                        '          Price: ' + `$${elem.price}`.yellow,
-                        'Amount in stock: ' + `${elem.stock_quantity}`.yellow
-                    ].join('\n');
-                    console.log(elemData + '\n');
-                });
-                menuPrompt();
+                logResponseElems(res);
+                amountToAdd(answers.restockID, res[0].stock_quantity);
             });
-            inquirer
-                .prompt([
-                    {
-                        type: "input",
-                        message: ".",
-                        name: "restock"
-                    }
-                ])
-                .then(answers => {
+        });
+    ;
+}
 
+function amountToAdd(restockID, originalStock) {
+    // the amount the manager chooses to add to an item if they decide to add to inventory
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "How many would you like to add?",
+                name: "restockAmount"
+            }
+        ])
+        .then(answers => {
+            var restockAmount = Number(answers.restockAmount);
+            if (!restockAmount > 0) {
+                console.log('Invalid entry. Please enter a number greater than 0'.red);
+                amountToAdd(restockID, originalStock);
+            } else {
+                var newStockAmount = originalStock + Number(answers.restockAmount);
+                updateRestock(newStockAmount, restockID);
+            }
+        });
+    ;
+}
+
+function updateRestock(newStockAmount, restockID) {
+    // update stock quantity in database
+    connection.query(`UPDATE products
+    SET stock_quantity = ?
+    WHERE item_id = ?
+    `, [newStockAmount, restockID], function (err) {
+            if (err) throw err;
+            console.log('Stock updated! New stock quantity is ' +
+                `${newStockAmount}`.yellow + '.');
+            menuPrompt();
+        });
+    ;
+}
+
+function addNewProduct() {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "Enter product name.",
+                name: "productName",
+            },
+            {
+                type: "input",
+                message: "Enter product's department name.",
+                name: "departmentName",
+            },
+            {
+                type: "input",
+                message: "Enter product's price.",
+                name: "productPrice",
+            },
+            {
+                type: "input",
+                message: "Set initial stock quantity.",
+                name: "stockQuantity",
+            }
+        ])
+        .then(answers => {
+            connection.query(`
+                INSERT INTO products (product_name, department_name, price, stock_quantity) 
+                VALUES (?, ?, ?, ?)
+                `, [answers.productName, answers.departmentName,
+                answers.productPrice, answers.stockQuantity], function (err) {
+                    if (err) throw err;2
+                    console.log('Product added!');
+                    menuPrompt();
                 });
             ;
         });
     ;
 }
 
-// function 
-//   * If a manager selects `View Products for Sale`, the app should list every available item:
-//   the item IDs, names, prices, and quantities.
-
-//   * If a manager selects `View Low Inventory`, then it should list all items with an inventory 
-//   count lower than five.
-
-//   * If a manager selects `Add to Inventory`, your app should display a prompt that will let the 
-//   manager "add more" of any item currently in the store.
-
-//   * If a manager selects `Add New Product`, it should allow the manager to add a completely new 
-//   product to the store.
+function logResponseElems(res) {
+    // function that logs each element of any response
+    res.forEach(elem => {
+        var elemData = [
+            '     Product ID: ' + `${elem.item_id}`.yellow,
+            '           Name: ' + `${elem.product_name}`.green,
+            '     Department: ' + `${elem.department_name}`.green,
+            '          Price: ' + `$${elem.price}`.yellow,
+            'Amount in stock: ' + `${elem.stock_quantity}`.yellow
+        ].join('\n');
+        console.log(elemData + '\n');
+    });
+}

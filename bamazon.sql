@@ -2,7 +2,6 @@ DROP DATABASE IF EXISTS bamazon;
 CREATE DATABASE bamazon;
 USE bamazon;
 
-DROP TABLE IF EXISTS products;
 CREATE TABLE products (
     item_id INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
     product_name TEXT NOT NULL,
@@ -31,5 +30,3 @@ INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Xbox One S 1TB Console", "Video Games", 299.99, 2674);
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Dark Souls III", "Video Games", 19.99, 4821);
-
-SELECT * FROM products WHERE stock_quantity < 5000;

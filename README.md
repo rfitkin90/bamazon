@@ -2,7 +2,7 @@
 
 `USER INSTRUCTIONS`
 
-### APP 1: bamazoncustomer.js ###
+### APP 1: bamazonCustomer.js ###
 
 1. Download, install, and run MAMP: https://www.mamp.info/en/downloads/
 
@@ -42,3 +42,44 @@
 of it you wish to buy, view your total checkout price, and decide whether or not to continue shopping.
 
 ![Prompts](https://puu.sh/CEC5l.png)
+
+
+### APP 2: bamazonManager.js ###
+
+1. Follow steps 1-7 for APP 1 if you have not done so already(this only needs to be done once to use all 3 apps).
+
+2. Run the app by typing this command:
+
+    node bamazonmanager.js
+
+    * This will display a list of managerial actions to choose from.
+
+![ManagerTasks](https://puu.sh/CG6wF.png)
+
+3. Select one of the four options:
+
+    1. View products for sale
+
+        * This will simply display a list of all available products for sale.
+
+        ![AvailableProducts](https://puu.sh/CG6zx.png)
+
+    2. View low inventory
+
+        * This will display a list of all products with a stock quantity lower than 5000.
+
+        ![ViewLowInventory](https://puu.sh/CG6Bh.png)
+        
+    3. Add to inventory
+
+        * This will let you select a product to restock, display its info, and let you specify how much 
+        you wish to replenishthe stock by.
+
+        ![AddToInventory](https://puu.sh/CG6EP.png)
+
+    4. Add new product
+
+        * This will let you add an entirely new product to the database. Follow the prompts as they come up 
+        to enter the product's name, department name, price, and inital stock quantity.
+
+        ![AddNewProduct](https://puu.sh/CG6Hi.png)
