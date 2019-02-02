@@ -27,6 +27,7 @@
     npm install mysql
     npm install inquirer
     npm install colors
+    npm install cli-table
 
 ![InstallDependencies](https://puu.sh/CEBXX.png)
 
