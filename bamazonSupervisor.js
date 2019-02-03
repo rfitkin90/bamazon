@@ -56,27 +56,20 @@ function menuPrompt(res) {
 
 function viewSalesByDept(res) {
     connection.query(`
-        SELECT product_sales
+        SELECT *
         FROM products
-        INNER JOIN departments
-        ON products.department_name = departments.department_name;
         `, function (err, res) {
             if (err) throw err;
             console.log(res);
-            // var salesTotal = 0;
-            // res.forEach(elem => {
-            //     salesTotal += elem.product_sales;
-            // });
-            // console.log(salesTotal);
+            var departmentSalesArr = [];
+            res.forEach(elem => {
+                // if departmentSalesArr
+            });
+            
+            console.log(departmentSalesObj);
         });
     ;
 }
-// SELECT *
-// FROM Orders
-
-// INNER JOIN Customers
-
-// ON Orders.CustomerID=Customers.CustomerID;
 function createNewDept() {
 
 }

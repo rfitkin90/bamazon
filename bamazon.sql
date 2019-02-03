@@ -46,3 +46,5 @@ CREATE TABLE departments (
 
 INSERT INTO departments (department_name, overhead_costs) 
 VALUES ("Video Games", 10000.00);
+INSERT INTO departments (department_name, overhead_costs) 
+VALUES ("Electronics", 12000.00);
