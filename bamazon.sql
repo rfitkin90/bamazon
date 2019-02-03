@@ -13,7 +13,8 @@ CREATE TABLE products (
 );
 
 UPDATE products
-SET product_sales = 0.00;
+SET product_sales = 0
+WHERE department_name = "Electronics";
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Nintendo Switch", "Video Games", 299.00, 4786);

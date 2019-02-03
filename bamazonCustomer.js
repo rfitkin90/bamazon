@@ -133,7 +133,6 @@ function updateProduct(ID, stockQuantity, amount, originalSales, totalPrice) {
     connection.query("UPDATE products SET stock_quantity = ?, product_sales = ? WHERE item_id = ?",
         [newStock, newSales, ID], function (err) {
             if (err) throw err;
-            console.log('sup');
         });
     ;
 }

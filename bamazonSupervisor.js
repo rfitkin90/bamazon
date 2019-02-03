@@ -55,27 +55,19 @@ function menuPrompt(res) {
 }
 
 function viewSalesByDept(res) {
-    // supervisor enters ID number of department he wishes to view sales of
-    inquirer
-        .prompt([
-            {
-                type: "input",
-                message: "Please enter the ID number of the department you wish to view the sales of.",
-                name: "departmentID"
-            }
-        ])
-        .then(answers => {
-            var ID = answers.departmentID - 1;
-            // console.log(res);
-            // console.log(ID);
-            console.log(res[ID].department_name);
-            connection.query(`SELECT product_sales FROM bamazon.products
-            WHERE bamazon.products.department_name = ?
-            `, [res[ID].department_name], function (err, res) {
-                    if (err) throw err;
-                    console.log(res);
-                });
-            ;
+    connection.query(`
+        SELECT product_sales
+        FROM products
+        INNER JOIN departments
+        ON products.department_name = departments.department_name;
+        `, function (err, res) {
+            if (err) throw err;
+            console.log(res);
+            // var salesTotal = 0;
+            // res.forEach(elem => {
+            //     salesTotal += elem.product_sales;
+            // });
+            // console.log(salesTotal);
         });
     ;
 }

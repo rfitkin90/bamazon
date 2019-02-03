@@ -151,10 +151,10 @@ function addNewProduct() {
         ])
         .then(answers => {
             connection.query(`
-                INSERT INTO products (product_name, department_name, price, stock_quantity) 
-                VALUES (?, ?, ?, ?)
+                INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales) 
+                VALUES (?, ?, ?, ?, ?)
                 `, [answers.productName, answers.departmentName,
-                answers.productPrice, answers.stockQuantity], function (err) {
+                answers.productPrice, answers.stockQuantity, 0], function (err) {
                     if (err) throw err;2
                     console.log('Product added!');
                     menuPrompt();
