@@ -84,3 +84,29 @@ of it you wish to buy, view your total checkout price, and decide whether or not
         to enter the product's name, department name, price, and inital stock quantity.
 
         ![AddNewProduct](https://puu.sh/CG6Hi.png)
+
+### APP 3: bamazonSupervisor.js ###
+
+1. Follow steps 1-7 for APP 1 if you have not done so already(this only needs to be done once to use all 3 apps).
+
+2. Run the app by typing this command:
+
+    node bamazonsupervisor.js
+
+    * This will display a list of supervisor actions to choose from.
+
+    ![Actions](https://i.imgur.com/bSjWdnm.png)
+
+3. Select one of the two options:
+
+    1. View sales by department
+
+        * This will display a table showing total sales, overhead costs, profit of each department
+
+        ![ProfitsTable](https://i.imgur.com/hplv2VD.png)
+
+    2. Create new department
+
+        * This will let you add a new department by entering a department name and overhead costs.
+
+        ![CreateDepartment](https://i.imgur.com/3ISI6xG.png)
