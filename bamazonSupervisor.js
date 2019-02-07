@@ -188,6 +188,19 @@ function createNewDept() {
    ;
 }
 
+var x = 'sam';
+
+obj = {};
+
+obj[x] = 5;
+
+obj.sam;
+
+
+obj = {
+   [x]: 5
+};
+
 
 // 4. When a supervisor selects `View Product Sales by Department`, the app should display a summarized 
 // table in their terminal/bash window. Use the table below as a guide.
