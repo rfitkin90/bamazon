@@ -1,5 +1,7 @@
 # bamazon
 
+Allows users to read and edit data on a mock-amazon website from the command line interface using MySQL from user, manager, and supervisor perspectives.
+
 `USER INSTRUCTIONS`
 
 ### APP 1: bamazonCustomer.js ###
